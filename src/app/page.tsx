@@ -1,19 +1,34 @@
-"use client";
+import DataTable from "./DataTable";
 
-import { useState } from "react";
-import DataFetcher, { Data, DataFetchedHandler } from "./DataFetcher";
+interface ResponseData {
+  ok: boolean;
+  data: {
+    createdAt: string;
+    time: number;
+    elapsed: number;
+    goal: string;
+    ended: boolean;
+    work: string;
+  }[];
+}
 
-export default function Home() {
-  const [history, setHistory] = useState<null | Data>(null);
+async function getData() {
+  const res = await fetch(`https://hackhour.hackclub.com/api/history/me`, {
+    headers: {
+      Authorization: `Bearer ${process.env.API_KEY}`,
+    },
+    next: { revalidate: 10 },
+  });
+  return (await res.json()) as Promise<ResponseData>;
+}
 
-  const handleDataFetched: DataFetchedHandler = (data: Data) => {
-    setHistory(data);
-  };
+export default async function Home() {
+  const data = await getData();
 
   return (
-    <main>
-      <h1>Hello, World!</h1>
-      <DataFetcher onDataFetched={handleDataFetched} />
+    <main className="p-5">
+      <h1 className="text-xl font-semibold text-center my-3">Arcade Lookup</h1>
+      <DataTable data={data.ok ? data.data : null} />
     </main>
   );
 }
