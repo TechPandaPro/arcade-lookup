@@ -1,3 +1,5 @@
+"use client";
+
 // https://flowbite.com/icons/
 
 interface SearchButtonProps {

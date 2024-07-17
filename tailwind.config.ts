@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 const config: Config = {
   content: [
@@ -20,6 +21,20 @@ const config: Config = {
       .fill(null)
       .map((_, i) => `w-[${i}%]`),
   ],
-  plugins: [],
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        ".color-scheme-normal": {
+          "color-scheme": "normal",
+        },
+        ".color-scheme-dark": {
+          "color-scheme": "dark",
+        },
+        ".color-scheme-light": {
+          "color-scheme": "light",
+        },
+      });
+    }),
+  ],
 };
 export default config;

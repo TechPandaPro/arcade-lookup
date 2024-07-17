@@ -1,7 +1,6 @@
-"use client";
-
 import { useState } from "react";
 import SearchButton from "./SearchButton";
+import SearchOptions from "./SearchOptions";
 
 interface DataItem {
   createdAt: string;
@@ -23,32 +22,21 @@ function formatStampStr(stamp: string) {
 export default function DataTable({ data }: DataFetcherProps) {
   console.log(data);
 
-  const [taskSearchShowing, setTaskSearchShowing] = useState(false);
-
-  function onTaskButtonClick() {
-    setTaskSearchShowing(!taskSearchShowing);
-  }
-
   const headerRow = (
     <tr>
-      <th className="px-4 py-1">
+      <th className="px-4 py-1 align-top">
         Stamp
-        {/* <SearchButton /> */}
+        <SearchOptions />
       </th>
-      <th className="px-4 py-1">
+      <th className="px-4 py-1 align-top">
         Goal
-        {/* <SearchButton /> */}
+        <SearchOptions />
       </th>
-      <th className="px-4 py-1">
+      <th className="px-4 py-1 align-top">
         Task
-        <SearchButton onButtonClick={onTaskButtonClick} />
-        {taskSearchShowing ? (
-          <input className="block w-full bg-transparent border-2 border-gray-400 focus:border-white outline-none rounded-md px-2 py-1 text-sm font-normal"></input>
-        ) : (
-          ""
-        )}
+        <SearchOptions />
       </th>
-      <th className="px-4 py-1">Progress (Minutes)</th>
+      <th className="px-4 py-1 align-top">Progress (Minutes)</th>
     </tr>
   );
 
