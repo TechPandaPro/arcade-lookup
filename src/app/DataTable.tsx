@@ -1,3 +1,8 @@
+"use client";
+
+import { useState } from "react";
+import SearchButton from "./SearchButton";
+
 interface DataItem {
   createdAt: string;
   time: number;
@@ -18,11 +23,31 @@ function formatStampStr(stamp: string) {
 export default function DataTable({ data }: DataFetcherProps) {
   console.log(data);
 
+  const [taskSearchShowing, setTaskSearchShowing] = useState(false);
+
+  function onTaskButtonClick() {
+    setTaskSearchShowing(!taskSearchShowing);
+  }
+
   const headerRow = (
     <tr>
-      <th className="px-4 py-1">Stamp</th>
-      <th className="px-4 py-1">Goal</th>
-      <th className="px-4 py-1">Task</th>
+      <th className="px-4 py-1">
+        Stamp
+        {/* <SearchButton /> */}
+      </th>
+      <th className="px-4 py-1">
+        Goal
+        {/* <SearchButton /> */}
+      </th>
+      <th className="px-4 py-1">
+        Task
+        <SearchButton onButtonClick={onTaskButtonClick} />
+        {taskSearchShowing ? (
+          <input className="block w-full bg-transparent border-2 border-gray-400 focus:border-white outline-none rounded-md px-2 py-1 text-sm font-normal"></input>
+        ) : (
+          ""
+        )}
+      </th>
       <th className="px-4 py-1">Progress (Minutes)</th>
     </tr>
   );
@@ -30,16 +55,14 @@ export default function DataTable({ data }: DataFetcherProps) {
   const dataRows = data?.map((item) => (
     <tr key={item.createdAt} className="odd:bg-gray-400/20">
       <td className="px-4 py-1">{formatStampStr(item.createdAt)}</td>
-      <td className="px-4 py-1">{item.goal}</td>
+      <td
+        className={`px-4 py-1 ${
+          item.goal === "No Goal" ? `text-gray-500` : ``
+        }`}
+      >
+        {item.goal}
+      </td>
       <td className="px-4 py-1">{item.work}</td>
-      {/* this styling didn't work well (a circle with the number inside) */}
-      {/* <td className="px-4 py-1 relative">
-        <div className="text-center absolute w-6 h-6 bg-transparent border-8 rounded-full border-gray-50/40 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -z-10">
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            {item.elapsed}
-          </div>
-        </div>
-      </td> */}
       <td className="px-4 py-1 relative">
         <span className="relative z-10">{item.elapsed}</span>
         {/* prettier-ignore */}
