@@ -15,6 +15,11 @@ const config: Config = {
       },
     },
   },
+  safelist: [
+    ...Array(101)
+      .fill(null)
+      .map((_, i) => `w-[${i}%]`),
+  ],
   plugins: [],
 };
 export default config;
