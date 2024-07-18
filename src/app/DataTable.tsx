@@ -1,6 +1,7 @@
-import { useState } from "react";
-import SearchButton from "./SearchButton";
-import SearchOptions from "./SearchOptions";
+// import { useState } from "react";
+// import SearchButton from "./SearchButton";
+// import SearchOption from "./SearchOption";
+import TextSearchOption from "./TextSearchOption";
 
 interface DataItem {
   createdAt: string;
@@ -26,15 +27,16 @@ export default function DataTable({ data }: DataFetcherProps) {
     <tr>
       <th className="px-4 py-1 align-top min-w-36">
         Stamp
-        <SearchOptions type="stampRange" />
+        {/* <SearchOption type="stampRange" /> */}
       </th>
       <th className="px-4 py-1 align-top min-w-36">
         Goal
-        <SearchOptions type="text" />
+        {/* <SearchOption type="text" /> */}
+        <TextSearchOption />
       </th>
       <th className="px-4 py-1 align-top min-w-36">
         Task
-        <SearchOptions type="text" />
+        {/* <SearchOption type="text" /> */}
       </th>
       <th className="px-4 py-1 align-top min-w-36">Progress (Minutes)</th>
     </tr>
