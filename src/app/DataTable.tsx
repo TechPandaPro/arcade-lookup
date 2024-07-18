@@ -24,19 +24,19 @@ export default function DataTable({ data }: DataFetcherProps) {
 
   const headerRow = (
     <tr>
-      <th className="px-4 py-1 align-top">
+      <th className="px-4 py-1 align-top min-w-36">
         Stamp
-        <SearchOptions />
+        <SearchOptions type="stampRange" />
       </th>
-      <th className="px-4 py-1 align-top">
+      <th className="px-4 py-1 align-top min-w-36">
         Goal
-        <SearchOptions />
+        <SearchOptions type="text" />
       </th>
-      <th className="px-4 py-1 align-top">
+      <th className="px-4 py-1 align-top min-w-36">
         Task
-        <SearchOptions />
+        <SearchOptions type="text" />
       </th>
-      <th className="px-4 py-1 align-top">Progress (Minutes)</th>
+      <th className="px-4 py-1 align-top min-w-36">Progress (Minutes)</th>
     </tr>
   );
 
