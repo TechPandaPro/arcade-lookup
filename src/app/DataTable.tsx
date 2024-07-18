@@ -1,6 +1,7 @@
-// import { useState } from "react";
-// import SearchButton from "./SearchButton";
-// import SearchOption from "./SearchOption";
+"use client";
+
+import { useState } from "react";
+import StampRangeSearchOption from "./StampRangeSearchOption";
 import TextSearchOption from "./TextSearchOption";
 
 interface DataItem {
@@ -13,7 +14,7 @@ interface DataItem {
 }
 
 interface DataFetcherProps {
-  data: null | DataItem[];
+  data: DataItem[] | null;
 }
 
 function formatStampStr(stamp: string) {
@@ -23,20 +24,41 @@ function formatStampStr(stamp: string) {
 export default function DataTable({ data }: DataFetcherProps) {
   console.log(data);
 
+  const [stampRangeSearch, setStampRangeSearch] = useState<{
+    from: number | null;
+    to: number | null;
+  }>({
+    from: null,
+    to: null,
+  });
+  const [goalSearch, setGoalSearch] = useState<string | null>(null);
+  const [taskSearch, setTaskSearch] = useState<string | null>(null);
+
+  function handleStampSearchInput(from: number | null, to: number | null) {
+    setStampRangeSearch({ from, to });
+  }
+
+  function handleGoalSearchInput(term: string | null) {
+    setGoalSearch(term);
+  }
+
+  function handleTaskSearchInput(term: string | null) {
+    setTaskSearch(term);
+  }
+
   const headerRow = (
     <tr>
       <th className="px-4 py-1 align-top min-w-36">
         Stamp
-        {/* <SearchOption type="stampRange" /> */}
+        <StampRangeSearchOption onSearchInput={handleStampSearchInput} />
       </th>
       <th className="px-4 py-1 align-top min-w-36">
         Goal
-        {/* <SearchOption type="text" /> */}
-        <TextSearchOption />
+        <TextSearchOption onSearchInput={handleGoalSearchInput} />
       </th>
       <th className="px-4 py-1 align-top min-w-36">
         Task
-        {/* <SearchOption type="text" /> */}
+        <TextSearchOption onSearchInput={handleTaskSearchInput} />
       </th>
       <th className="px-4 py-1 align-top min-w-36">Progress (Minutes)</th>
     </tr>
