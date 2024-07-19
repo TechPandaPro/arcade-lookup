@@ -39,7 +39,7 @@ export default function TextSearchOption({
       <input
         ref={searchTermRef}
         type="text"
-        className="w-0 min-w-full bg-transparent border-2 border-gray-500 focus:border-gray-100 outline-none rounded-md px-2 py-1 text-sm font-normal transition-all duration-100"
+        className="w-0 min-w-full bg-transparent border-2 border-gray-500 focus:border-gray-100 outline-none rounded-md px-2 py-1 text-sm font-normal transition-all duration-100 mb-1"
         onInput={handleSearchInput}
       />
     </SearchOption>

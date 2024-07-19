@@ -28,10 +28,15 @@ export default function SortOption({
   // FIXME: consider adjusting button padding
   return (
     // <button aria-label="Sort" title="Sort" onClick={handleClick}>
-    <button aria-label="Sort" title="Sort" onClick={handleClick}>
+    <button
+      aria-label="Sort"
+      title="Sort"
+      onClick={handleClick}
+      className="px-1"
+    >
       {text}
       <svg
-        className={`w-4 h-4 text-gray-800 dark:text-white inline-block ml-[.1rem] ${sortBy === 0 ? `hidden` : ``} ${sortBy === -1 ? `rotate-180` : ``}`} // prettier-ignore
+        className={`w-4 h-4 text-gray-800 dark:text-white inline-block ml-[.1rem] animate-sortRotateIn transition-transform duration-100 ${sortBy === 0 ? `hidden` : ``} ${sortBy === -1 ? `rotate-180` : ``}`} // prettier-ignore
         aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         width="24"

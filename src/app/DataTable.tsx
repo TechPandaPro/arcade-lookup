@@ -75,8 +75,8 @@ export default function DataTable({ data }: DataFetcherProps) {
 
   const headerRow = (
     <tr>
+      <th></th>
       <th className="px-4 py-1 align-top min-w-36">
-        {/* Stamp */}
         <SortOption
           sortId="createdAt"
           text="Stamp"
@@ -86,7 +86,6 @@ export default function DataTable({ data }: DataFetcherProps) {
         <StampRangeSearchOption onSearchInput={handleStampSearchInput} />
       </th>
       <th className="px-4 py-1 align-top min-w-36">
-        {/* Goal */}
         <SortOption
           sortId="goal"
           text="Goal"
@@ -96,7 +95,6 @@ export default function DataTable({ data }: DataFetcherProps) {
         <TextSearchOption onSearchInput={handleGoalSearchInput} />
       </th>
       <th className="px-4 py-1 align-top min-w-36">
-        {/* Task */}
         <SortOption
           sortId="work"
           text="Task"
@@ -106,7 +104,6 @@ export default function DataTable({ data }: DataFetcherProps) {
         <TextSearchOption onSearchInput={handleTaskSearchInput} />
       </th>
       <th className="px-4 py-1 align-top min-w-36">
-        {/* Progress (Minutes) */}
         <SortOption
           sortId="elapsed"
           text="Minutes"
@@ -135,8 +132,30 @@ export default function DataTable({ data }: DataFetcherProps) {
           .includes(taskSearch.toLowerCase().trim()))
   );
 
-  const dataRows = filteredData?.map((item) => (
+  // 0 = no sorting, -1 = descending, 1 = ascending
+  filteredData?.sort((a, b) => {
+    if (sortBy.sortId === "createdAt") {
+      const aStamp = getNumStamp(a.createdAt);
+      const bStamp = getNumStamp(b.createdAt);
+      return sortBy.sortBy === 1 ? aStamp - bStamp : bStamp - aStamp;
+    } else if (sortBy.sortId === "goal")
+      return sortBy.sortBy === 1
+        ? a.goal.localeCompare(b.goal)
+        : b.goal.localeCompare(a.goal);
+    else if (sortBy.sortId === "work")
+      return sortBy.sortBy === 1
+        ? a.work.localeCompare(b.work)
+        : b.work.localeCompare(a.work);
+    else if (sortBy.sortId === "elapsed")
+      return sortBy.sortBy === 1
+        ? a.elapsed - b.elapsed
+        : b.elapsed - a.elapsed;
+    else return 0;
+  });
+
+  const dataRows = filteredData?.map((item, i) => (
     <tr key={item.createdAt} className="odd:bg-gray-400/20">
+      <td className="pl-3 text-xs text-gray-400 text-right">{i + 1}</td>
       <td className="px-4 py-1">{formatStampStr(item.createdAt)}</td>
       <td
         className={`px-4 py-1 ${
@@ -154,10 +173,37 @@ export default function DataTable({ data }: DataFetcherProps) {
     </tr>
   ));
 
+  if (dataRows && dataRows.length >= 1) {
+    const sum =
+      filteredData?.reduce(
+        (accumulator, currentValue) => accumulator + currentValue.elapsed,
+        0
+      ) ?? 0;
+    dataRows.push(
+      <tr key="summary" className="bg-gray-400/30">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td className="px-3 py-1 text-sm">
+          {sum} ({Math.trunc((sum / 60) * 100) / 100} hr)
+        </td>
+      </tr>
+    );
+  }
+
+  // FIXME: add message when no sessions are shown for the given filters
   return (
-    <table ref={tableRef} className="mx-auto">
-      <thead>{headerRow}</thead>
-      <tbody>{dataRows}</tbody>
-    </table>
+    <>
+      <table ref={tableRef} className="mx-auto">
+        <thead>{headerRow}</thead>
+        <tbody>{dataRows}</tbody>
+      </table>
+      {!dataRows || dataRows.length === 0 ? (
+        <div className="text-center">No Results</div>
+      ) : (
+        ""
+      )}
+    </>
   );
 }

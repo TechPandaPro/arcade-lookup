@@ -53,7 +53,7 @@ export default function StampRangeSearchOption({
         ref={dateToRef}
         id="dateTo"
         type="datetime-local"
-        className="block w-0 min-w-full bg-transparent border-2 border-gray-500 focus:border-gray-100 outline-none rounded-md px-2 py-1 text-xs font-normal transition-all duration-100 color-scheme-dark"
+        className="block w-0 min-w-full bg-transparent border-2 border-gray-500 focus:border-gray-100 outline-none rounded-md px-2 py-1 text-xs font-normal transition-all duration-100 color-scheme-dark mb-1"
         // onInput={onSearchInput}
       />
     </SearchOption>

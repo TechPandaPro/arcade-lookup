@@ -53,7 +53,7 @@ export default function SearchOption({
       <SearchButton onButtonClick={handleTaskButtonClick} />
       <div
         ref={taskSearchRef}
-        className={`overflow-hidden transition-all duration-200 ease-out`}
+        className="overflow-hidden transition-all duration-200 ease-out"
         style={{
           height: taskSearchShowing ? `${contentHeight}px` : `0px`,
         }}
