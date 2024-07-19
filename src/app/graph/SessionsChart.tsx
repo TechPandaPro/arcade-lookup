@@ -9,6 +9,7 @@ import {
   Tooltip,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import zoomPlugin from "chartjs-plugin-zoom";
 
 interface DataItem {
   createdAt: string;
@@ -37,8 +38,13 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
-  Tooltip
+  Tooltip,
+  zoomPlugin
 );
+
+// zoomPlugin.zoomRectFunctions.myScale = (scale, zoom, center, limits) => {
+//   console.log("test");
+// };
 
 export default function SessionsChart({ data }: DataFetcherProps) {
   if (!data) return <div>No data</div>;
@@ -97,7 +103,7 @@ export default function SessionsChart({ data }: DataFetcherProps) {
               // borderColor: "rgb(252, 151, 119)",
               borderColor: "rgb(102 204 204)",
               // borderColor: "rgb(255, 255, 255)",
-              tension: 0.01,
+              tension: 0,
             },
           ],
         }}
@@ -113,7 +119,38 @@ export default function SessionsChart({ data }: DataFetcherProps) {
                 duration: 100,
               },
             },
+            zoom: {
+              pan: {
+                enabled: true,
+                mode: "x",
+                // scaleMode: "x",
+                // threshold: 10,
+                onPanStart: (chart) => {
+                  if (!chart.chart.isZoomedOrPanned()) return false;
+                },
+              },
+              zoom: {
+                wheel: {
+                  enabled: true,
+                  // speed: 0.05,
+                },
+                pinch: { enabled: true },
+                mode: "x",
+                // scaleMode: "y",
+                drag: {
+                  enabled: true,
+                  backgroundColor: "rgb(102 204 204 / 0.2)",
+                  modifierKey: "alt",
+                },
+              },
+              // limits: { x: { min: 0, max: 10 } },
+            },
           },
+          // transitions: {
+          //   zoom: {
+          //     animation: { duration: 200, easing: "easeOutCubic" },
+          //   },
+          // },
           scales: {
             x: {
               ticks: { font: { size: 15 }, minRotation: 0, maxRotation: 10 },
@@ -124,11 +161,7 @@ export default function SessionsChart({ data }: DataFetcherProps) {
         plugins={[
           {
             id: "verticalLine",
-            // FIXME: finish adding vertical line
             afterDraw: (chart) => {
-              // console.log(chart.tooltip);
-              // if (chart.tooltip?.active) {
-              // const tooltipOpacity = chart.tooltip?.opacity;
               if (chart.tooltip?.opacity) {
                 console.log("draw");
                 const ctx = chart.ctx;
