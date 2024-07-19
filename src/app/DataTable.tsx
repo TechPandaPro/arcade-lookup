@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import StampRangeSearchOption from "./StampRangeSearchOption";
 import TextSearchOption from "./TextSearchOption";
+import SortOption from "./SortOption";
 
 interface DataItem {
   createdAt: string;
@@ -37,6 +38,12 @@ export default function DataTable({ data }: DataFetcherProps) {
   });
   const [goalSearch, setGoalSearch] = useState<string | null>(null);
   const [taskSearch, setTaskSearch] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<{ sortId: string; sortBy: 0 | -1 | 1 }>({
+    sortId: "createdAt",
+    sortBy: 1,
+  });
+
+  const tableRef = useRef<HTMLTableElement | null>(null);
 
   function handleStampSearchInput(from: number | null, to: number | null) {
     setStampRangeSearch({ from, to });
@@ -50,21 +57,63 @@ export default function DataTable({ data }: DataFetcherProps) {
     setTaskSearch(term);
   }
 
+  function handleSortClick(sortId: string) {
+    if (sortId === sortBy.sortId)
+      setSortBy({ sortId, sortBy: sortBy.sortBy === -1 ? 1 : -1 });
+    else setSortBy({ sortId, sortBy: 1 });
+  }
+
+  useEffect(() => {
+    if (tableRef.current) {
+      const allTh = tableRef.current.querySelectorAll("thead th");
+      for (let i = 0; i < allTh.length; i++) {
+        const th = allTh[i] as HTMLTableCellElement;
+        th.style.width = `${th.offsetWidth}px`;
+      }
+    }
+  }, []);
+
   const headerRow = (
     <tr>
       <th className="px-4 py-1 align-top min-w-36">
-        Stamp
+        {/* Stamp */}
+        <SortOption
+          sortId="createdAt"
+          text="Stamp"
+          sortBy={sortBy.sortId === "createdAt" ? sortBy.sortBy : 0}
+          onSortClick={handleSortClick}
+        />
         <StampRangeSearchOption onSearchInput={handleStampSearchInput} />
       </th>
       <th className="px-4 py-1 align-top min-w-36">
-        Goal
+        {/* Goal */}
+        <SortOption
+          sortId="goal"
+          text="Goal"
+          sortBy={sortBy.sortId === "goal" ? sortBy.sortBy : 0}
+          onSortClick={handleSortClick}
+        />
         <TextSearchOption onSearchInput={handleGoalSearchInput} />
       </th>
       <th className="px-4 py-1 align-top min-w-36">
-        Task
+        {/* Task */}
+        <SortOption
+          sortId="work"
+          text="Task"
+          sortBy={sortBy.sortId === "work" ? sortBy.sortBy : 0}
+          onSortClick={handleSortClick}
+        />
         <TextSearchOption onSearchInput={handleTaskSearchInput} />
       </th>
-      <th className="px-4 py-1 align-top min-w-36">Progress (Minutes)</th>
+      <th className="px-4 py-1 align-top min-w-36">
+        {/* Progress (Minutes) */}
+        <SortOption
+          sortId="elapsed"
+          text="Minutes"
+          sortBy={sortBy.sortId === "elapsed" ? sortBy.sortBy : 0}
+          onSortClick={handleSortClick}
+        />
+      </th>
     </tr>
   );
 
@@ -106,7 +155,7 @@ export default function DataTable({ data }: DataFetcherProps) {
   ));
 
   return (
-    <table className="mx-auto">
+    <table ref={tableRef} className="mx-auto">
       <thead>{headerRow}</thead>
       <tbody>{dataRows}</tbody>
     </table>

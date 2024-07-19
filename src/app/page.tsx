@@ -1,5 +1,7 @@
 import DataTable from "./DataTable";
 
+// FIXME: improve support for light mode
+
 interface ResponseData {
   ok: boolean;
   data: {

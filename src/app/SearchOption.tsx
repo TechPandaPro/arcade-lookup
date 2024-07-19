@@ -15,8 +15,9 @@ export default function SearchOption({
   children,
 }: SearchOptionProps) {
   const [taskSearchShowing, setTaskSearchShowing] = useState(false);
-  const taskSearchRef = useRef<HTMLDivElement | null>(null);
   const [contentHeight, setContentHeight] = useState(0);
+
+  const taskSearchRef = useRef<HTMLDivElement | null>(null);
 
   function handleTaskButtonClick() {
     if (
