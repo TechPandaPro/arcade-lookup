@@ -14,6 +14,10 @@ export default function StampRangeSearchOption({
   const dateToRef = useRef<HTMLInputElement | null>(null);
 
   function handleSearchInput() {
+    triggerSearchInput();
+  }
+
+  function triggerSearchInput() {
     const dateFromStr = dateFromRef.current?.value;
     const dateToStr = dateToRef.current?.value;
 
@@ -25,8 +29,13 @@ export default function StampRangeSearchOption({
     onSearchInput(dateFrom, dateTo);
   }
 
+  function handleSuppressSearch(doSuppress: boolean) {
+    if (doSuppress) onSearchInput(null, null);
+    else triggerSearchInput();
+  }
+
   return (
-    <SearchOption>
+    <SearchOption onSuppressSearch={handleSuppressSearch}>
       <label htmlFor="dateFrom" className="block text-xs text-left mb-1">
         From:
       </label>

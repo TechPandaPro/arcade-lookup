@@ -17,6 +17,10 @@ interface DataFetcherProps {
   data: DataItem[] | null;
 }
 
+function getNumStamp(stamp: string) {
+  return new Date(stamp).getTime();
+}
+
 function formatStampStr(stamp: string) {
   return new Date(stamp).toLocaleString();
 }
@@ -64,7 +68,19 @@ export default function DataTable({ data }: DataFetcherProps) {
     </tr>
   );
 
-  const dataRows = data?.map((item) => (
+  const filteredData = data?.filter(
+    (item) =>
+      (!stampRangeSearch.from ||
+        stampRangeSearch.from <= getNumStamp(item.createdAt)) &&
+      (!stampRangeSearch.to ||
+        stampRangeSearch.to >= getNumStamp(item.createdAt)) &&
+      (!goalSearch ||
+        item.goal.toLowerCase().includes(goalSearch.toLowerCase())) &&
+      (!taskSearch ||
+        item.work.toLowerCase().includes(taskSearch.toLowerCase()))
+  );
+
+  const dataRows = filteredData?.map((item) => (
     <tr key={item.createdAt} className="odd:bg-gray-400/20">
       <td className="px-4 py-1">{formatStampStr(item.createdAt)}</td>
       <td

@@ -8,9 +8,9 @@ interface SearchButtonProps {
 
 export default function SearchButton({ onButtonClick }: SearchButtonProps) {
   return (
-    <button onClick={onButtonClick}>
+    <button onClick={onButtonClick} className="inline-flex ml-2 align-middle">
       <svg
-        className="w-4 h-4 text-gray-800 dark:text-white inline-block ml-2 cursor-pointer hover:invert-[.1] active:invert-[.2]" /* transition-[filter] duration-100 */
+        className="w-4 h-4 text-gray-800 dark:text-white inline-block cursor-pointer hover:invert-[.1] active:invert-[.2]" /* transition-[filter] duration-100 */
         aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         width="24"
