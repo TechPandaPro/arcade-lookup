@@ -95,7 +95,7 @@ export default function SessionsChart({ data }: DataFetcherProps) {
               ),
               fill: false,
               // borderColor: "rgb(252, 151, 119)",
-              borderColor: "rgb(102, 204, 204)",
+              borderColor: "rgb(102 204 204)",
               // borderColor: "rgb(255, 255, 255)",
               tension: 0.01,
             },
@@ -103,10 +103,16 @@ export default function SessionsChart({ data }: DataFetcherProps) {
         }}
         options={{
           responsive: true,
+          aspectRatio: 3,
           // plugins: { title: { display: true, text: "hey" } },
           plugins: {
             // legend: { labels: { font: { size: 100 } } },
-            tooltip: { backgroundColor: "rgb(64 64 64 / 0.8)" },
+            tooltip: {
+              backgroundColor: "rgb(64 64 64 / 0.8)",
+              animation: {
+                duration: 100,
+              },
+            },
           },
           scales: {
             x: {
@@ -120,18 +126,22 @@ export default function SessionsChart({ data }: DataFetcherProps) {
             id: "verticalLine",
             // FIXME: finish adding vertical line
             afterDraw: (chart) => {
-              console.log(chart.tooltip);
+              // console.log(chart.tooltip);
               // if (chart.tooltip?.active) {
-              if (chart.tooltip?.opacity === 1) {
+              // const tooltipOpacity = chart.tooltip?.opacity;
+              if (chart.tooltip?.opacity) {
                 console.log("draw");
                 const ctx = chart.ctx;
 
-                const x = chart.tooltip.x;
+                const x = chart.tooltip.caretX;
 
                 ctx.save();
 
-                ctx.strokeStyle = "rgb(102, 204, 204)";
-                ctx.lineWidth = 5;
+                ctx.beginPath();
+                ctx.globalAlpha = chart.tooltip.opacity;
+
+                ctx.strokeStyle = "rgb(102 204 204)";
+                ctx.lineWidth = 2;
 
                 ctx.moveTo(x, chart.scales.y.top);
                 ctx.lineTo(x, chart.scales.y.bottom);
