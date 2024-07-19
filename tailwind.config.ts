@@ -32,6 +32,9 @@ const config: Config = {
         ".color-scheme-light": {
           "color-scheme": "light",
         },
+        ".color-scheme-inherit": {
+          "color-scheme": "inherit",
+        },
       });
     }),
   ],

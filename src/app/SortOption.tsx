@@ -15,19 +15,11 @@ export default function SortOption({
   sortBy,
   onSortClick,
 }: SortOptionProps) {
-  // const [sortBy, setSortBy] = useState<0 | -1 | 1>(0);
-
-  // function handleClick() {
-  //   setSortBy(sortBy === -1 ? 1 : -1);
-  // }
-
   function handleClick() {
     onSortClick(sortId);
   }
 
-  // FIXME: consider adjusting button padding
   return (
-    // <button aria-label="Sort" title="Sort" onClick={handleClick}>
     <button
       aria-label="Sort"
       title="Sort"

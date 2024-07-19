@@ -168,7 +168,7 @@ export default function DataTable({ data }: DataFetcherProps) {
       <td className="px-4 py-1 relative">
         <span className="relative z-10">{item.elapsed}</span>
         {/* prettier-ignore */}
-        <div className={`absolute ${!item.ended ? `bg-yellow-700` : (item.elapsed === item.time ? ` bg-green-900` : `bg-orange-900`)} w-[${Math.round((item.elapsed / item.time) * 93)}%] h-[max(50%,1.5rem)] top-1/2 -translate-y-1/2 left-2 rounded`}></div>
+        <div className={`absolute ${!item.ended ? `bg-yellow-400 dark:bg-yellow-700` : (item.elapsed === item.time ? `bg-green-400 dark:bg-green-900` : `bg-orange-400 dark:bg-orange-900`)} w-[${Math.round((item.elapsed / item.time) * 93)}%] h-[max(50%,1.5rem)] top-1/2 -translate-y-1/2 left-2 rounded`}></div>
       </td>
     </tr>
   ));
@@ -180,21 +180,64 @@ export default function DataTable({ data }: DataFetcherProps) {
         0
       ) ?? 0;
     dataRows.push(
-      <tr key="summary" className="bg-gray-400/30">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td className="px-3 py-1 text-sm">
-          {sum} ({Math.trunc((sum / 60) * 100) / 100} hr)
+      <tr key="summary">
+        {/* <tr key="summary" className="bg-blue-500"> */}
+        {/* <td className="relative">
+          <div className="absolute left-0 top-0 mt-2 w-full h-full bg-gray-400/30"></div>
         </td>
+        <td className="relative">
+          <div className="absolute left-0 top-0 mt-2 w-full h-full bg-gray-400/30"></div>
+        </td>
+        <td className="relative">
+          <div className="absolute left-0 top-0 mt-2 w-full h-full bg-gray-400/30"></div>
+        </td>
+        <td className="relative">
+          <div className="absolute left-0 top-0 mt-2 w-full h-full bg-gray-400/30"></div>
+        </td> */}
+        {/* <td className="pt-1">
+          <div className="px-3 py-1 text-sm bg-gray-400/30"></div>
+        </td>
+        <td className="pt-1">
+          <div className="px-3 py-1 text-sm bg-gray-400/30"></div>
+        </td>
+        <td className="pt-1">
+          <div className="px-3 py-1 text-sm bg-gray-400/30"></div>
+        </td>
+        <td className="pt-1">
+          <div className="px-3 py-1 text-sm bg-gray-400/30"></div>
+        </td>
+        <td className="pt-1">
+          <div className="px-3 py-1 text-sm bg-gray-400/30">
+            {sum} ({Math.trunc((sum / 60) * 100) / 100} hr)
+          </div>
+        </td> */}
+        <td className="h-0 px-0 pt-2">
+          <div className="h-full bg-gray-400/30"></div>
+        </td>
+        <td className="h-0 px-0 pt-2">
+          <div className="h-full bg-gray-400/30"></div>
+        </td>
+        <td className="h-0 px-0 pt-2">
+          <div className="h-full bg-gray-400/30"></div>
+        </td>
+        <td className="h-0 px-0 pt-2">
+          <div className="h-full bg-gray-400/30"></div>
+        </td>
+        <td className="h-0 px-0 pt-2">
+          <div className="px-3 py-1 text-sm bg-gray-400/30">
+            {sum.toLocaleString()} (
+            {(Math.trunc((sum / 60) * 100) / 100).toLocaleString()} hr)
+          </div>
+        </td>
+        {/* <td className="px-3 py-1 text-sm">
+          {sum} ({Math.trunc((sum / 60) * 100) / 100} hr)
+        </td> */}
       </tr>
     );
   }
 
-  // FIXME: add message when no sessions are shown for the given filters
   return (
-    <>
+    <div className="overflow-x-auto">
       <table ref={tableRef} className="mx-auto">
         <thead>{headerRow}</thead>
         <tbody>{dataRows}</tbody>
@@ -204,6 +247,6 @@ export default function DataTable({ data }: DataFetcherProps) {
       ) : (
         ""
       )}
-    </>
+    </div>
   );
 }

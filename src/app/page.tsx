@@ -1,6 +1,7 @@
 import DataTable from "./DataTable";
 
 // FIXME: improve support for light mode
+// FIXME: improve responsiveness
 
 interface ResponseData {
   ok: boolean;
@@ -28,7 +29,7 @@ export default async function Home() {
   const data = await getData();
 
   return (
-    <main className="p-5">
+    <main className="px-5 pt-5 pb-8">
       <h1 className="text-xl font-semibold text-center my-3">Arcade Lookup</h1>
       <DataTable data={data.ok ? data.data : null} />
     </main>
