@@ -6,6 +6,7 @@ import {
   LinearScale,
   LineElement,
   PointElement,
+  Tooltip,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
@@ -31,7 +32,13 @@ function stampToDateStr(stamp: number) {
   return dateStr;
 }
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip
+);
 
 export default function SessionsChart({ data }: DataFetcherProps) {
   if (!data) return <div>No data</div>;
@@ -40,13 +47,26 @@ export default function SessionsChart({ data }: DataFetcherProps) {
     (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
   );
 
-  const startDate = new Date(data[0].createdAt).getTime();
+  const oneDayMs = 1000 * 60 * 60 * 24;
+
+  const startDate = new Date(
+    new Date(data[0].createdAt).toDateString()
+  ).getTime();
+  const endDate = new Date(new Date().toDateString()).getTime();
+  const dateCount = Math.round((endDate - startDate) / oneDayMs) + 1;
+  // const startDateObj = new Date(data[0].createdAt);
+  // const startDate = startDateObj.getTime();
+  // const endDateObj = new Date();
+  // const dateCount =
+  //   Math.round(
+  //     (new Date(startDateObj.toDateString()).getTime() -
+  //       new Date(endDateObj.toDateString()).getTime()) /
+  //       oneDayMs
+  //   ) + 1;
 
   const chartDates = [];
 
-  const oneDayMs = 1000 * 60 * 60 * 24;
-
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < dateCount; i++) {
     const dateToAdd = stampToDateStr(startDate + oneDayMs * i);
     const filtered = data.filter(
       (item) => stampToDateStr(new Date(item.createdAt).getTime()) === dateToAdd
@@ -60,55 +80,73 @@ export default function SessionsChart({ data }: DataFetcherProps) {
 
   console.log(JSON.stringify(chartDates));
 
-  // data.map((item) => {
-  //   const createdAt = new Date(item.createdAt);
-  //   const createdAtStr = `${(createdAt.getMonth() + 1)
-  //     .toString()
-  //     .padStart(2, "0")}/${createdAt.getDate().toString().padStart(2, "0")}`;
-  //   console.log(createdAtStr);
-  // });
-
-  // return (
-  //   <Line
-  //     data={{
-  //       labels: [
-  //         "January",
-  //         "February",
-  //         "March",
-  //         "April",
-  //         "May",
-  //         "June",
-  //         "July",
-  //       ],
-  //       datasets: [
-  //         {
-  //           label: "My First Dataset",
-  //           data: [65, 59, 80, 81, 56, 55, 40],
-  //           fill: false,
-  //           borderColor: "rgb(75, 192, 192)",
-  //           tension: 0.1,
-  //         },
-  //       ],
-  //     }}
-  //   />
-  // );
-
   return (
-    <Line
-      data={{
-        labels: chartDates.map((chartDate) => chartDate.date),
-        datasets: [
-          {
-            label: "Hour Count",
-            data: chartDates.map((chartDate) => chartDate.hours),
-            fill: false,
-            borderColor: "rgb(75, 192, 192)",
-            tension: 0.01,
+    <div className="flex-grow w-[800px] max-w-full">
+      <Line
+        // style={{ maxWidth: "500px" }}
+        // datasetIdKey="hours"
+        data={{
+          labels: chartDates.map((chartDate) => chartDate.date),
+          datasets: [
+            {
+              label: "Hour Count",
+              data: chartDates.map(
+                (chartDate) => Math.trunc(chartDate.hours * 10) / 10
+              ),
+              fill: false,
+              // borderColor: "rgb(252, 151, 119)",
+              borderColor: "rgb(102, 204, 204)",
+              // borderColor: "rgb(255, 255, 255)",
+              tension: 0.01,
+            },
+          ],
+        }}
+        options={{
+          responsive: true,
+          // plugins: { title: { display: true, text: "hey" } },
+          plugins: {
+            // legend: { labels: { font: { size: 100 } } },
+            tooltip: { backgroundColor: "rgb(64 64 64 / 0.8)" },
           },
-        ],
-      }}
-      // options={{ scales: { xAxes: { ticks: { font: { size: 100 } } } } }}
-      // options={{ plugins: { legend: { labels: { font: { size: 100 } } } } }}
-    />
+          scales: {
+            x: {
+              ticks: { font: { size: 15 }, minRotation: 0, maxRotation: 10 },
+            },
+          },
+          interaction: { intersect: false, mode: "index" },
+        }}
+        plugins={[
+          {
+            id: "verticalLine",
+            // FIXME: finish adding vertical line
+            afterDraw: (chart) => {
+              console.log(chart.tooltip);
+              // if (chart.tooltip?.active) {
+              if (chart.tooltip?.opacity === 1) {
+                console.log("draw");
+                const ctx = chart.ctx;
+
+                const x = chart.tooltip.x;
+
+                ctx.save();
+
+                ctx.strokeStyle = "rgb(102, 204, 204)";
+                ctx.lineWidth = 5;
+
+                ctx.moveTo(x, chart.scales.y.top);
+                ctx.lineTo(x, chart.scales.y.bottom);
+
+                ctx.stroke();
+
+                ctx.restore();
+              }
+            },
+          },
+        ]}
+        // options={{ interaction: { mode: "nearest" } }}
+        // options={{ scales: { xAxes: { ticks: { font: { size: 100 } } } } }}
+        // options={{ plugins: { legend: { labels: { font: { size: 100 } } } } }}
+      />
+    </div>
   );
 }

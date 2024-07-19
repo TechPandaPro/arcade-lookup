@@ -26,7 +26,7 @@ export default async function Home() {
   const data = await getData();
 
   return (
-    <main className="px-5 pt-5 pb-8">
+    <main className="flex flex-col items-center h-full px-5 pt-5 pb-8">
       <h1 className="text-xl font-semibold text-center my-3">
         Arcade Lookup Graph
       </h1>
