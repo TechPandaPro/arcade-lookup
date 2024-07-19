@@ -75,9 +75,15 @@ export default function DataTable({ data }: DataFetcherProps) {
       (!stampRangeSearch.to ||
         stampRangeSearch.to >= getNumStamp(item.createdAt)) &&
       (!goalSearch ||
-        item.goal.toLowerCase().includes(goalSearch.toLowerCase())) &&
+        item.goal
+          .toLowerCase()
+          .trim()
+          .includes(goalSearch.toLowerCase().trim())) &&
       (!taskSearch ||
-        item.work.toLowerCase().includes(taskSearch.toLowerCase()))
+        item.work
+          .toLowerCase()
+          .trim()
+          .includes(taskSearch.toLowerCase().trim()))
   );
 
   const dataRows = filteredData?.map((item) => (

@@ -5,11 +5,13 @@ import SearchButton from "./SearchButton";
 
 interface SearchOptionProps {
   onSuppressSearch: (doSuppress: boolean) => void;
+  onAppear?: () => void;
   children: ReactNode;
 }
 
 export default function SearchOption({
   onSuppressSearch,
+  onAppear,
   children,
 }: SearchOptionProps) {
   const [taskSearchShowing, setTaskSearchShowing] = useState(false);
@@ -17,9 +19,13 @@ export default function SearchOption({
   const [contentHeight, setContentHeight] = useState(0);
 
   function handleTaskButtonClick() {
-    if (taskSearchRef.current) {
+    if (
+      taskSearchRef.current &&
+      taskSearchRef.current.style.display !== "block"
+    ) {
       taskSearchRef.current.style.display = "block";
       taskSearchRef.current.offsetHeight;
+      if (onAppear) onAppear();
     }
     setTaskSearchShowing(!taskSearchShowing);
   }
