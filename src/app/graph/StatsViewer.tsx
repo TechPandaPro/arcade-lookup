@@ -26,7 +26,7 @@ export default function StatsViewer({ data }: DataFetcherProps) {
   }
 
   return (
-    <div className="flex flex-col gap-3 w-[800px] max-w-full overflow-hidden">
+    <div className="flex flex-col gap-4 w-[800px] max-w-full overflow-hidden">
       <DayEndOption onDayEndInput={handleDayEndInput} />
       <DataExtraStats data={data} />
       <SessionsChart data={data} dayEndMs={dayEndMs} />

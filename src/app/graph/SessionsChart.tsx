@@ -6,6 +6,7 @@ import {
   LinearScale,
   LineElement,
   PointElement,
+  Title,
   Tooltip,
 } from "chart.js";
 import { Chart, Line } from "react-chartjs-2";
@@ -40,6 +41,7 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
+  Title,
   Tooltip,
   zoomPlugin
 );
@@ -136,22 +138,30 @@ export default function SessionsChart({ data, dayEndMs }: DataFetcherProps) {
 
   if (!data) return <div>No data</div>;
 
-  // const chartData = getChartData(data);
-
   return (
-    // <div className="flex-grow w-[800px] max-w-full overflow-hidden">
     <Chart
-      // style={{ maxWidth: "500px" }}
-      // datasetIdKey="hours"
       ref={chartRef}
       type="line"
+      className="border-2 rounded-md border-gray-400"
       data={{ labels: [], datasets: [] }}
       options={{
         responsive: true,
         aspectRatio: 3,
-        // plugins: { title: { display: true, text: "hey" } },
+        layout: {
+          padding: {
+            top: 5,
+            right: 30,
+            bottom: 10,
+            left: 35,
+          },
+        },
         plugins: {
-          // legend: { labels: { font: { size: 100 } } },
+          title: {
+            display: true,
+            text: "Hours/Day Chart",
+            color: "rgb(209 213 219)",
+            font: { size: 16, weight: "normal" },
+          },
           tooltip: {
             backgroundColor: "rgb(64 64 64 / 0.8)",
             animation: {
@@ -162,8 +172,6 @@ export default function SessionsChart({ data, dayEndMs }: DataFetcherProps) {
             pan: {
               enabled: true,
               mode: "x",
-              // scaleMode: "x",
-              // threshold: 10,
               onPanStart: (chart) => {
                 if (!chart.chart.isZoomedOrPanned()) return false;
               },
@@ -171,25 +179,17 @@ export default function SessionsChart({ data, dayEndMs }: DataFetcherProps) {
             zoom: {
               wheel: {
                 enabled: true,
-                // speed: 0.05,
               },
               pinch: { enabled: true },
               mode: "x",
-              // scaleMode: "y",
               drag: {
                 enabled: true,
                 backgroundColor: "rgb(102 204 204 / 0.2)",
                 modifierKey: "alt",
               },
             },
-            // limits: { x: { min: 0, max: 10 } },
           },
         },
-        // transitions: {
-        //   zoom: {
-        //     animation: { duration: 200, easing: "easeOutCubic" },
-        //   },
-        // },
         scales: {
           x: {
             ticks: { font: { size: 15 }, minRotation: 0, maxRotation: 10 },
@@ -225,10 +225,6 @@ export default function SessionsChart({ data, dayEndMs }: DataFetcherProps) {
           },
         },
       ]}
-      // options={{ interaction: { mode: "nearest" } }}
-      // options={{ scales: { xAxes: { ticks: { font: { size: 100 } } } } }}
-      // options={{ plugins: { legend: { labels: { font: { size: 100 } } } } }}
     />
-    // </div>
   );
 }

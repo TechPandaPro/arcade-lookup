@@ -59,21 +59,23 @@ export default function DataExtraStats({ data }: DataExtraStatsProps) {
   return (
     // <table className=" max-w-36">
     <div className="flex justify-center">
-      <table>
-        <caption>Additional Stats</caption>
-        <thead>
-          <tr>
-            <th>Total Hours</th>
-            <th>Hours Per Day</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{totalHours}</td>
-            <td>{hoursPerDay}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="p-1 border-2 rounded-md border-gray-400">
+        <table>
+          <caption className="text-gray-300">Additional Stats</caption>
+          <thead>
+            <tr>
+              <th className="px-2">Total Hours</th>
+              <th className="px-2">Hours Per Day</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="px-2">{totalHours}</td>
+              <td className="px-2">{hoursPerDay}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

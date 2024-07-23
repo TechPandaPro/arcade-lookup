@@ -1,3 +1,4 @@
+import Header from "../Header";
 import StatsViewer from "./StatsViewer";
 
 interface ResponseData {
@@ -28,9 +29,9 @@ export default async function Home() {
 
   return (
     <main className="flex flex-col items-center h-full px-5 pt-5 pb-8">
-      <h1 className="text-xl font-semibold text-center my-3">
-        Arcade Lookup Graph
-      </h1>
+      <Header currentPath="/graph" />
+      {/* <h2 className="text-2xl font-semibold text-center mb-1">Stats</h2> */}
+      {/* <div className="w-48 h-0.5 bg-white mb-3 rounded-full"></div> */}
       <StatsViewer data={data.ok ? data.data : null} />
     </main>
   );
