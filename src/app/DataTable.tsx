@@ -68,8 +68,17 @@ export default function DataTable({ data }: DataFetcherProps) {
       const allTh = tableRef.current.querySelectorAll("thead th");
       for (let i = 0; i < allTh.length; i++) {
         const th = allTh[i] as HTMLTableCellElement;
+        // TODO: check if this should be changed whenever window is resized
         th.style.width = `${th.offsetWidth}px`;
       }
+      // window.addEventListener("resize", () => {
+      //   for (let i = 0; i < allTh.length; i++) {
+      //     const th = allTh[i] as HTMLTableCellElement;
+      //     th.style.removeProperty("width");
+      //   }
+      //   // then set the .width again
+      //   // but this wouldn't quite work if the user resizes the window while filtering the rows
+      // });
     }
   }, []);
 
@@ -180,58 +189,20 @@ export default function DataTable({ data }: DataFetcherProps) {
         0
       ) ?? 0;
     dataRows.push(
-      <tr key="summary">
-        {/* <tr key="summary" className="bg-blue-500"> */}
-        {/* <td className="relative">
-          <div className="absolute left-0 top-0 mt-2 w-full h-full bg-gray-400/30"></div>
-        </td>
-        <td className="relative">
-          <div className="absolute left-0 top-0 mt-2 w-full h-full bg-gray-400/30"></div>
-        </td>
-        <td className="relative">
-          <div className="absolute left-0 top-0 mt-2 w-full h-full bg-gray-400/30"></div>
-        </td>
-        <td className="relative">
-          <div className="absolute left-0 top-0 mt-2 w-full h-full bg-gray-400/30"></div>
-        </td> */}
-        {/* <td className="pt-1">
-          <div className="px-3 py-1 text-sm bg-gray-400/30"></div>
-        </td>
-        <td className="pt-1">
-          <div className="px-3 py-1 text-sm bg-gray-400/30"></div>
-        </td>
-        <td className="pt-1">
-          <div className="px-3 py-1 text-sm bg-gray-400/30"></div>
-        </td>
-        <td className="pt-1">
-          <div className="px-3 py-1 text-sm bg-gray-400/30"></div>
-        </td>
-        <td className="pt-1">
-          <div className="px-3 py-1 text-sm bg-gray-400/30">
-            {sum} ({Math.trunc((sum / 60) * 100) / 100} hr)
-          </div>
-        </td> */}
-        <td className="h-0 px-0 pt-2">
-          <div className="h-full bg-gray-400/30"></div>
-        </td>
-        <td className="h-0 px-0 pt-2">
-          <div className="h-full bg-gray-400/30"></div>
-        </td>
-        <td className="h-0 px-0 pt-2">
-          <div className="h-full bg-gray-400/30"></div>
-        </td>
-        <td className="h-0 px-0 pt-2">
-          <div className="h-full bg-gray-400/30"></div>
-        </td>
-        <td className="h-0 px-0 pt-2">
-          <div className="px-3 py-1 text-sm bg-gray-400/30">
+      <tr
+        key="summary"
+        className="bg-gradient-to-b from-transparent from-[10px] via-gray-400/30 via-[10px] to-gray-400/30"
+      >
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td className="px-0 pt-2">
+          <div className="px-3 py-1 text-sm">
             {sum.toLocaleString()} (
             {(Math.trunc((sum / 60) * 100) / 100).toLocaleString()} hr)
           </div>
         </td>
-        {/* <td className="px-3 py-1 text-sm">
-          {sum} ({Math.trunc((sum / 60) * 100) / 100} hr)
-        </td> */}
       </tr>
     );
   }

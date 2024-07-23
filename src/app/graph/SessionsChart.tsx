@@ -42,6 +42,11 @@ ChartJS.register(
   zoomPlugin
 );
 
+// TODO: maybe change <h1> title
+// TODO: add links between this page and the other one
+// TODO: remove comments and such
+// TODO: add inputs to determine when a day starts/ends (e.g. for me I go till 2am sometimes)
+
 // zoomPlugin.zoomRectFunctions.myScale = (scale, zoom, center, limits) => {
 //   console.log("test");
 // };

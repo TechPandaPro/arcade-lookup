@@ -37,6 +37,9 @@ const config: Config = {
         },
       });
     }),
+    plugin(function ({ addVariant }) {
+      addVariant("firefox", ":-moz-any(&)");
+    }),
   ],
 };
 export default config;

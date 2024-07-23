@@ -2,6 +2,7 @@ import DataTable from "./DataTable";
 
 // FIXME: improve support for light mode
 // FIXME: improve responsiveness
+// TODO: add favicon/title/etc.
 
 interface ResponseData {
   ok: boolean;
@@ -16,6 +17,7 @@ interface ResponseData {
 }
 
 async function getData() {
+  // FIXME: fix old data caching
   const res = await fetch(`https://hackhour.hackclub.com/api/history/me`, {
     headers: {
       Authorization: `Bearer ${process.env.API_KEY}`,
