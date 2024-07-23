@@ -8,8 +8,9 @@ import {
   PointElement,
   Tooltip,
 } from "chart.js";
-import { Line } from "react-chartjs-2";
+import { Chart, Line } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom";
+import { useEffect, useRef } from "react";
 
 interface DataItem {
   createdAt: string;
@@ -53,149 +54,181 @@ ChartJS.register(
 // };
 
 export default function SessionsChart({ data, dayEndMs }: DataFetcherProps) {
+  const chartRef = useRef<ChartJS | null>(null);
+
+  useEffect(() => {
+    const chart = chartRef.current;
+    if (chart && data) {
+      const oneDayMs = 1000 * 60 * 60 * 24;
+
+      data.sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+
+      const startDate =
+        new Date(new Date(data[0].createdAt).toDateString()).getTime() +
+        dayEndMs;
+      const endDate = new Date(new Date().toDateString()).getTime() + dayEndMs;
+      const dateCount = Math.round((endDate - startDate) / oneDayMs) + 1;
+      // const startDateObj = new Date(data[0].createdAt);
+      // const startDate = startDateObj.getTime();
+      // const endDateObj = new Date();
+      // const dateCount =
+      //   Math.round(
+      //     (new Date(startDateObj.toDateString()).getTime() -
+      //       new Date(endDateObj.toDateString()).getTime()) /
+      //       oneDayMs
+      //   ) + 1;
+
+      const chartDates = [];
+
+      for (let i = 0; i < dateCount; i++) {
+        // const dateToAdd = stampToDateStr(startDate + oneDayMs * i);
+        // const filtered = data.filter(
+        //   (item) =>
+        //     stampToDateStr(new Date(item.createdAt).getTime()) === dateToAdd
+        // );
+        // const minutesSum = filtered.reduce(
+        //   (accumulator, currentValue) => accumulator + currentValue.elapsed,
+        //   0
+        // );
+        // chartDates.push({ date: dateToAdd, hours: minutesSum / 60 });
+        const filtered = data.filter((item) => {
+          const itemTime = new Date(item.createdAt).getTime();
+          return (
+            itemTime >= startDate + oneDayMs * i &&
+            itemTime < startDate + oneDayMs * (i + 1)
+          );
+        });
+        const minutesSum = filtered.reduce(
+          (accumulator, currentValue) => accumulator + currentValue.elapsed,
+          0
+        );
+        chartDates.push({
+          date: stampToDateStr(startDate + oneDayMs * i),
+          hours: minutesSum / 60,
+        });
+      }
+
+      console.log(JSON.stringify(chartDates));
+
+      chart.data = {
+        labels: chartDates.map((chartDate) => chartDate.date),
+        datasets: [
+          {
+            label: "Hour Count",
+            data: chartDates.map(
+              (chartDate) => Math.trunc(chartDate.hours * 10) / 10
+            ),
+            fill: false,
+            // borderColor: "rgb(252, 151, 119)",
+            borderColor: "rgb(102 204 204)",
+            // borderColor: "rgb(255, 255, 255)",
+            tension: 0,
+          },
+        ],
+      };
+
+      chart.update();
+    }
+  }, [data, dayEndMs]);
+
   if (!data) return <div>No data</div>;
 
-  data.sort(
-    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-  );
-
-  const oneDayMs = 1000 * 60 * 60 * 24;
-
-  const startDate = new Date(
-    new Date(data[0].createdAt).toDateString()
-  ).getTime();
-  const endDate = new Date(new Date().toDateString()).getTime();
-  const dateCount = Math.round((endDate - startDate) / oneDayMs) + 1;
-  // const startDateObj = new Date(data[0].createdAt);
-  // const startDate = startDateObj.getTime();
-  // const endDateObj = new Date();
-  // const dateCount =
-  //   Math.round(
-  //     (new Date(startDateObj.toDateString()).getTime() -
-  //       new Date(endDateObj.toDateString()).getTime()) /
-  //       oneDayMs
-  //   ) + 1;
-
-  const chartDates = [];
-
-  for (let i = 0; i < dateCount; i++) {
-    const dateToAdd = stampToDateStr(startDate + oneDayMs * i);
-    const filtered = data.filter(
-      (item) => stampToDateStr(new Date(item.createdAt).getTime()) === dateToAdd
-    );
-    const minutesSum = filtered.reduce(
-      (accumulator, currentValue) => accumulator + currentValue.elapsed,
-      0
-    );
-    chartDates.push({ date: dateToAdd, hours: minutesSum / 60 });
-  }
-
-  console.log(JSON.stringify(chartDates));
+  // const chartData = getChartData(data);
 
   return (
-    <div className="flex-grow w-[800px] max-w-full">
-      <Line
-        // style={{ maxWidth: "500px" }}
-        // datasetIdKey="hours"
-        data={{
-          labels: chartDates.map((chartDate) => chartDate.date),
-          datasets: [
-            {
-              label: "Hour Count",
-              data: chartDates.map(
-                (chartDate) => Math.trunc(chartDate.hours * 10) / 10
-              ),
-              fill: false,
-              // borderColor: "rgb(252, 151, 119)",
-              borderColor: "rgb(102 204 204)",
-              // borderColor: "rgb(255, 255, 255)",
-              tension: 0,
+    // <div className="flex-grow w-[800px] max-w-full overflow-hidden">
+    <Chart
+      // style={{ maxWidth: "500px" }}
+      // datasetIdKey="hours"
+      ref={chartRef}
+      type="line"
+      data={{ labels: [], datasets: [] }}
+      options={{
+        responsive: true,
+        aspectRatio: 3,
+        // plugins: { title: { display: true, text: "hey" } },
+        plugins: {
+          // legend: { labels: { font: { size: 100 } } },
+          tooltip: {
+            backgroundColor: "rgb(64 64 64 / 0.8)",
+            animation: {
+              duration: 100,
             },
-          ],
-        }}
-        options={{
-          responsive: true,
-          aspectRatio: 3,
-          // plugins: { title: { display: true, text: "hey" } },
-          plugins: {
-            // legend: { labels: { font: { size: 100 } } },
-            tooltip: {
-              backgroundColor: "rgb(64 64 64 / 0.8)",
-              animation: {
-                duration: 100,
+          },
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: "x",
+              // scaleMode: "x",
+              // threshold: 10,
+              onPanStart: (chart) => {
+                if (!chart.chart.isZoomedOrPanned()) return false;
               },
             },
             zoom: {
-              pan: {
+              wheel: {
                 enabled: true,
-                mode: "x",
-                // scaleMode: "x",
-                // threshold: 10,
-                onPanStart: (chart) => {
-                  if (!chart.chart.isZoomedOrPanned()) return false;
-                },
+                // speed: 0.05,
               },
-              zoom: {
-                wheel: {
-                  enabled: true,
-                  // speed: 0.05,
-                },
-                pinch: { enabled: true },
-                mode: "x",
-                // scaleMode: "y",
-                drag: {
-                  enabled: true,
-                  backgroundColor: "rgb(102 204 204 / 0.2)",
-                  modifierKey: "alt",
-                },
+              pinch: { enabled: true },
+              mode: "x",
+              // scaleMode: "y",
+              drag: {
+                enabled: true,
+                backgroundColor: "rgb(102 204 204 / 0.2)",
+                modifierKey: "alt",
               },
-              // limits: { x: { min: 0, max: 10 } },
             },
+            // limits: { x: { min: 0, max: 10 } },
           },
-          // transitions: {
-          //   zoom: {
-          //     animation: { duration: 200, easing: "easeOutCubic" },
-          //   },
-          // },
-          scales: {
-            x: {
-              ticks: { font: { size: 15 }, minRotation: 0, maxRotation: 10 },
-            },
+        },
+        // transitions: {
+        //   zoom: {
+        //     animation: { duration: 200, easing: "easeOutCubic" },
+        //   },
+        // },
+        scales: {
+          x: {
+            ticks: { font: { size: 15 }, minRotation: 0, maxRotation: 10 },
           },
-          interaction: { intersect: false, mode: "index" },
-        }}
-        plugins={[
-          {
-            id: "verticalLine",
-            afterDraw: (chart) => {
-              if (chart.tooltip?.opacity) {
-                // console.log("draw");
-                const ctx = chart.ctx;
+        },
+        interaction: { intersect: false, mode: "index" },
+      }}
+      plugins={[
+        {
+          id: "verticalLine",
+          afterDraw: (chart) => {
+            if (chart.tooltip?.opacity) {
+              // console.log("draw");
+              const ctx = chart.ctx;
 
-                const x = chart.tooltip.caretX;
+              const x = chart.tooltip.caretX;
 
-                ctx.save();
+              ctx.save();
 
-                ctx.beginPath();
-                ctx.globalAlpha = chart.tooltip.opacity;
+              ctx.beginPath();
+              ctx.globalAlpha = chart.tooltip.opacity;
 
-                ctx.strokeStyle = "rgb(102 204 204)";
-                ctx.lineWidth = 2;
+              ctx.strokeStyle = "rgb(102 204 204)";
+              ctx.lineWidth = 2;
 
-                ctx.moveTo(x, chart.scales.y.top);
-                ctx.lineTo(x, chart.scales.y.bottom);
+              ctx.moveTo(x, chart.scales.y.top);
+              ctx.lineTo(x, chart.scales.y.bottom);
 
-                ctx.stroke();
+              ctx.stroke();
 
-                ctx.restore();
-              }
-            },
+              ctx.restore();
+            }
           },
-        ]}
-        // options={{ interaction: { mode: "nearest" } }}
-        // options={{ scales: { xAxes: { ticks: { font: { size: 100 } } } } }}
-        // options={{ plugins: { legend: { labels: { font: { size: 100 } } } } }}
-      />
-    </div>
+        },
+      ]}
+      // options={{ interaction: { mode: "nearest" } }}
+      // options={{ scales: { xAxes: { ticks: { font: { size: 100 } } } } }}
+      // options={{ plugins: { legend: { labels: { font: { size: 100 } } } } }}
+    />
+    // </div>
   );
 }
