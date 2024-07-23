@@ -22,6 +22,7 @@ interface DataItem {
 
 interface DataFetcherProps {
   data: DataItem[] | null;
+  dayEndMs: number;
 }
 
 function stampToDateStr(stamp: number) {
@@ -51,7 +52,7 @@ ChartJS.register(
 //   console.log("test");
 // };
 
-export default function SessionsChart({ data }: DataFetcherProps) {
+export default function SessionsChart({ data, dayEndMs }: DataFetcherProps) {
   if (!data) return <div>No data</div>;
 
   data.sort(
@@ -168,7 +169,7 @@ export default function SessionsChart({ data }: DataFetcherProps) {
             id: "verticalLine",
             afterDraw: (chart) => {
               if (chart.tooltip?.opacity) {
-                console.log("draw");
+                // console.log("draw");
                 const ctx = chart.ctx;
 
                 const x = chart.tooltip.caretX;

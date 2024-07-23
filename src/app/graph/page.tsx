@@ -1,4 +1,4 @@
-import SessionsChart from "./SessionsChart";
+import StatsViewer from "./StatsViewer";
 
 interface ResponseData {
   ok: boolean;
@@ -31,7 +31,7 @@ export default async function Home() {
       <h1 className="text-xl font-semibold text-center my-3">
         Arcade Lookup Graph
       </h1>
-      <SessionsChart data={data.ok ? data.data : null} />
+      <StatsViewer data={data.ok ? data.data : null} />
     </main>
   );
 }
