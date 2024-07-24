@@ -1,8 +1,7 @@
 import DataTable from "./DataTable";
 import Header from "./Header";
+import { Metadata } from "next";
 
-// FIXME: improve support for light mode
-// FIXME: improve responsiveness
 // TODO: add favicon/title/etc.
 
 interface ResponseData {
@@ -28,6 +27,11 @@ async function getData() {
   });
   return (await res.json()) as Promise<ResponseData>;
 }
+
+export const metadata: Metadata = {
+  title: "Arcade Lookup | Sessions",
+  description: "Displays all your session data for Hack Club Arcade",
+};
 
 export default async function Home() {
   const data = await getData();

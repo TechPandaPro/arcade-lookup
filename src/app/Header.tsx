@@ -1,5 +1,3 @@
-// TODO: consider component name
-
 interface HeaderProps {
   currentPath: string;
 }

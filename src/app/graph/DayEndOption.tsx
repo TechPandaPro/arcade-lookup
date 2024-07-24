@@ -31,7 +31,7 @@ export default function DayEndOption({ onDayEndInput }: DayEndOptionProps) {
         type="time"
         id="dayEndStamp"
         className="bg-transparent border-2 border-gray-300 focus:border-gray-500 dark:border-gray-500 dark:focus:border-gray-100 outline-none rounded-md px-2 py-1 w-28 text-xs font-normal transition-all duration-100"
-        // defaultValue="00:00"
+        defaultValue="00:00"
         onInput={handleDayEndInput}
       />
     </div>

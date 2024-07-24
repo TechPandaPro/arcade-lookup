@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Header from "../Header";
 import StatsViewer from "./StatsViewer";
 
@@ -24,6 +25,11 @@ async function getData() {
   });
   return (await res.json()) as Promise<ResponseData>;
 }
+
+export const metadata: Metadata = {
+  title: "Arcade Lookup | Stats",
+  description: "Displays your session stats and averages",
+};
 
 export default async function Home() {
   const data = await getData();

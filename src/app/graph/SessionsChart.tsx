@@ -46,14 +46,7 @@ ChartJS.register(
   zoomPlugin
 );
 
-// TODO: maybe change <h1> title
-// TODO: add links between this page and the other one
 // TODO: remove comments and such
-// TODO: add inputs to determine when a day starts/ends (e.g. for me I go till 2am sometimes)
-
-// zoomPlugin.zoomRectFunctions.myScale = (scale, zoom, center, limits) => {
-//   console.log("test");
-// };
 
 export default function SessionsChart({ data, dayEndMs }: DataFetcherProps) {
   const chartRef = useRef<ChartJS | null>(null);
@@ -73,29 +66,10 @@ export default function SessionsChart({ data, dayEndMs }: DataFetcherProps) {
         dayEndMs;
       const endDate = new Date(new Date().toDateString()).getTime() + dayEndMs;
       const dateCount = Math.round((endDate - startDate) / oneDayMs) + 1;
-      // const startDateObj = new Date(data[0].createdAt);
-      // const startDate = startDateObj.getTime();
-      // const endDateObj = new Date();
-      // const dateCount =
-      //   Math.round(
-      //     (new Date(startDateObj.toDateString()).getTime() -
-      //       new Date(endDateObj.toDateString()).getTime()) /
-      //       oneDayMs
-      //   ) + 1;
 
       const chartDates = [];
 
       for (let i = 0; i < dateCount; i++) {
-        // const dateToAdd = stampToDateStr(startDate + oneDayMs * i);
-        // const filtered = data.filter(
-        //   (item) =>
-        //     stampToDateStr(new Date(item.createdAt).getTime()) === dateToAdd
-        // );
-        // const minutesSum = filtered.reduce(
-        //   (accumulator, currentValue) => accumulator + currentValue.elapsed,
-        //   0
-        // );
-        // chartDates.push({ date: dateToAdd, hours: minutesSum / 60 });
         const filtered = data.filter((item) => {
           const itemTime = new Date(item.createdAt).getTime();
           return (
@@ -124,9 +98,7 @@ export default function SessionsChart({ data, dayEndMs }: DataFetcherProps) {
               (chartDate) => Math.trunc(chartDate.hours * 10) / 10
             ),
             fill: false,
-            // borderColor: "rgb(252, 151, 119)",
             borderColor: "rgb(102 204 204)",
-            // borderColor: "rgb(255, 255, 255)",
             tension: 0,
           },
         ],

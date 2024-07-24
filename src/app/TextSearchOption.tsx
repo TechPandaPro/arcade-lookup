@@ -26,7 +26,6 @@ export default function TextSearchOption({
     else triggerSearchInput();
   }
 
-  // FIXME: figure out why this causes input to move in from wrong side
   function handleAppear() {
     if (searchTermRef.current) searchTermRef.current.focus();
   }

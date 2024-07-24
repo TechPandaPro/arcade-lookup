@@ -65,48 +65,6 @@ export default function DataTable({ data }: DataFetcherProps) {
     else setSortBy({ sortId, sortBy: 1 });
   }
 
-  // function hasNoSearch() {
-  //   return (
-  //     !stampRangeSearch.from &&
-  //     !stampRangeSearch.to &&
-  //     !goalSearch &&
-  //     !taskSearch
-  //   );
-  // }
-
-  // useEffect(() => {
-  //   function handleResize() {
-  //     // if (hasNoSearch()) {
-  //     // }
-  //     if (
-  //       !stampRangeSearch.from &&
-  //       !stampRangeSearch.to &&
-  //       !goalSearch &&
-  //       !taskSearch &&
-  //       headerRowRef.current
-  //     ) {
-  //       setHeaderWidths(null);
-  //       setHeaderWidths(
-  //         Array.from(headerRowRef.current.querySelectorAll("th")).map(
-  //           (th) => th.offsetWidth
-  //         )
-  //       );
-  //       console.log("resize!!");
-  //       // setLastSize({ width: window.innerWidth, height: window.innerHeight });
-  //     }
-  //   }
-  //   console.log("run");
-
-  //   if (headerWidths === null) handleResize();
-
-  //   window.addEventListener("resize", handleResize);
-
-  //   return () => {
-  //     console.log("remove!!");
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, [stampRangeSearch, goalSearch, taskSearch, headerWidths, headerRowRef]);
-
   useEffect(() => {
     function handleResize() {
       if (
@@ -137,38 +95,6 @@ export default function DataTable({ data }: DataFetcherProps) {
       );
     }
   }, [headerWidths, headerRowRef]);
-
-  // useEffect(() => {
-  //   if (tableRef.current) {
-  //     const allTh = tableRef.current.querySelectorAll("thead th");
-  //     for (let i = 0; i < allTh.length; i++) {
-  //       const th = allTh[i] as HTMLTableCellElement;
-  //       // TODO: check if this should be changed whenever window is resized
-  //       th.style.width = `${th.offsetWidth}px`;
-  //     }
-  //     window.addEventListener("resize", () => {
-  //       for (let i = 0; i < allTh.length; i++) {
-  //         const th = allTh[i] as HTMLTableCellElement;
-  //         th.style.removeProperty("width");
-  //       }
-
-  //       const oldStampRangeSearch = JSON.parse(
-  //         JSON.stringify(stampRangeSearch)
-  //       );
-  //       const oldGoalSearch = goalSearch;
-  //       const oldTaskSearch = taskSearch;
-  //       const oldSortBy = JSON.parse(JSON.stringify(sortBy));
-
-  //       setStampRangeSearch({ from: null, to: null });
-  //       setGoalSearch(null);
-  //       setTaskSearch(null);
-  //       setSortBy({ sortId: "createdAt", sortBy: 1 });
-
-  //       // then set the .width again
-  //       // but this wouldn't quite work if the user resizes the window while filtering the rows
-  //     });
-  //   }
-  // }, []);
 
   const headerRow = (
     <tr ref={headerRowRef}>

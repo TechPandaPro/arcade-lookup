@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Arcade Lookup",
-  description: "Displays all your session data for Hack Club Arcade",
+  description: "A centralized tool to view all your Arcade session data",
 };
 
 export default function RootLayout({
