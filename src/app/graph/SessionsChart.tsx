@@ -139,92 +139,92 @@ export default function SessionsChart({ data, dayEndMs }: DataFetcherProps) {
   if (!data) return <div>No data</div>;
 
   return (
-    <Chart
-      ref={chartRef}
-      type="line"
-      className="border-2 rounded-md border-gray-400"
-      data={{ labels: [], datasets: [] }}
-      options={{
-        responsive: true,
-        aspectRatio: 3,
-        layout: {
-          padding: {
-            top: 5,
-            right: 30,
-            bottom: 10,
-            left: 35,
-          },
-        },
-        plugins: {
-          title: {
-            display: true,
-            text: "Hours/Day Chart",
-            color: "rgb(209 213 219)",
-            font: { size: 16, weight: "normal" },
-          },
-          tooltip: {
-            backgroundColor: "rgb(64 64 64 / 0.8)",
-            animation: {
-              duration: 100,
+    <div className="aspect-[3/1] min-h-44 w-auto max-w-full">
+      <Chart
+        ref={chartRef}
+        type="line"
+        className="border-2 rounded-md border-gray-400"
+        data={{ labels: [], datasets: [] }}
+        options={{
+          maintainAspectRatio: false,
+          layout: {
+            padding: {
+              top: 5,
+              right: 30,
+              bottom: 10,
+              left: 35,
             },
           },
-          zoom: {
-            pan: {
-              enabled: true,
-              mode: "x",
-              onPanStart: (chart) => {
-                if (!chart.chart.isZoomedOrPanned()) return false;
+          plugins: {
+            title: {
+              display: true,
+              text: "Hours/Day Chart",
+              color: "rgb(209 213 219)",
+              font: { size: 16, weight: "normal" },
+            },
+            tooltip: {
+              backgroundColor: "rgb(64 64 64 / 0.8)",
+              animation: {
+                duration: 100,
               },
             },
             zoom: {
-              wheel: {
+              pan: {
                 enabled: true,
+                mode: "x",
+                onPanStart: (chart) => {
+                  if (!chart.chart.isZoomedOrPanned()) return false;
+                },
               },
-              pinch: { enabled: true },
-              mode: "x",
-              drag: {
-                enabled: true,
-                backgroundColor: "rgb(102 204 204 / 0.2)",
-                modifierKey: "alt",
+              zoom: {
+                wheel: {
+                  enabled: true,
+                },
+                pinch: { enabled: true },
+                mode: "x",
+                drag: {
+                  enabled: true,
+                  backgroundColor: "rgb(102 204 204 / 0.2)",
+                  modifierKey: "alt",
+                },
               },
             },
           },
-        },
-        scales: {
-          x: {
-            ticks: { font: { size: 15 }, minRotation: 0, maxRotation: 10 },
+          scales: {
+            x: {
+              ticks: { font: { size: 15 }, minRotation: 0, maxRotation: 10 },
+            },
           },
-        },
-        interaction: { intersect: false, mode: "index" },
-      }}
-      plugins={[
-        {
-          id: "verticalLine",
-          afterDraw: (chart) => {
-            if (chart.tooltip?.opacity) {
-              // console.log("draw");
-              const ctx = chart.ctx;
+          interaction: { intersect: false, mode: "index" },
+        }}
+        plugins={[
+          {
+            id: "verticalLine",
+            afterDraw: (chart) => {
+              if (chart.tooltip?.opacity) {
+                const ctx = chart.ctx;
 
-              const x = chart.tooltip.caretX;
+                const x = chart.tooltip.caretX;
 
-              ctx.save();
+                ctx.save();
 
-              ctx.beginPath();
-              ctx.globalAlpha = chart.tooltip.opacity;
+                ctx.beginPath();
+                ctx.globalAlpha = chart.tooltip.opacity;
 
-              ctx.strokeStyle = "rgb(102 204 204)";
-              ctx.lineWidth = 2;
+                ctx.strokeStyle = "rgb(102 204 204)";
+                ctx.lineWidth = 2;
 
-              ctx.moveTo(x, chart.scales.y.top);
-              ctx.lineTo(x, chart.scales.y.bottom);
+                ctx.moveTo(x, chart.scales.y.top);
+                ctx.lineTo(x, chart.scales.y.bottom);
 
-              ctx.stroke();
+                ctx.stroke();
 
-              ctx.restore();
-            }
+                ctx.restore();
+              }
+            },
           },
-        },
-      ]}
-    />
+        ]}
+      />
+    </div>
   );
 }

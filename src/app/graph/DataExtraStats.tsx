@@ -16,19 +16,6 @@ function formatHours(hourCount: number) {
 }
 
 export default function DataExtraStats({ data }: DataExtraStatsProps) {
-  // return (
-  //   <table>
-  //     <tr>
-  //       <th>Total Hours:</th>
-  //       <td></td>
-  //     </tr>
-  //     <tr>
-  //       <th>Average h/day:</th>
-  //       <td></td>
-  //     </tr>
-  //   </table>
-  // );
-
   let totalHours = "N/A";
   let hoursPerDay = "N/A";
   if (data) {
@@ -49,19 +36,13 @@ export default function DataExtraStats({ data }: DataExtraStatsProps) {
     hoursPerDay = formatHours(hoursPerDayNum);
   }
 
-  // return (
-  //   <>
-  //     <div>Total Hours: {totalHours}</div>
-  //     <div>Hours Per Day: {hoursPerDay}</div>
-  //   </>
-  // );
-
   return (
-    // <table className=" max-w-36">
     <div className="flex justify-center">
       <div className="p-1 border-2 rounded-md border-gray-400">
         <table>
-          <caption className="text-gray-300">Additional Stats</caption>
+          <caption className="text-gray-500 dark:text-gray-300">
+            Additional Stats
+          </caption>
           <thead>
             <tr>
               <th className="px-2">Total Hours</th>

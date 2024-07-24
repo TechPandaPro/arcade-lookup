@@ -20,6 +20,7 @@ async function getData() {
       Authorization: `Bearer ${process.env.API_KEY}`,
     },
     next: { revalidate: 10 },
+    // cache: "no-store",
   });
   return (await res.json()) as Promise<ResponseData>;
 }
@@ -28,10 +29,8 @@ export default async function Home() {
   const data = await getData();
 
   return (
-    <main className="flex flex-col items-center h-full px-5 pt-5 pb-8">
+    <main className="flex flex-col items-center min-h-full px-5 pt-5 pb-8">
       <Header currentPath="/graph" />
-      {/* <h2 className="text-2xl font-semibold text-center mb-1">Stats</h2> */}
-      {/* <div className="w-48 h-0.5 bg-white mb-3 rounded-full"></div> */}
       <StatsViewer data={data.ok ? data.data : null} />
     </main>
   );

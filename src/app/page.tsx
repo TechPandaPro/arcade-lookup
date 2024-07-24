@@ -24,6 +24,7 @@ async function getData() {
       Authorization: `Bearer ${process.env.API_KEY}`,
     },
     next: { revalidate: 10 },
+    // cache: "no-store",
   });
   return (await res.json()) as Promise<ResponseData>;
 }
@@ -32,11 +33,7 @@ export default async function Home() {
   const data = await getData();
 
   return (
-    <main className="flex flex-col align-middle px-5 pt-5 pb-8">
-      {/* <h1 className="text-xl font-semibold text-center my-3">
-        Arcade Lookup Sessions
-      </h1> */}
-      {/* FIXME: shrink underline */}
+    <main className="flex flex-col items-center min-h-full px-5 pt-5 pb-8">
       <Header currentPath="/" />
       <DataTable data={data.ok ? data.data : null} />
     </main>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 interface DayEndOptionProps {
   onDayEndInput: (ms: number) => void;
@@ -9,19 +9,7 @@ interface DayEndOptionProps {
 export default function DayEndOption({ onDayEndInput }: DayEndOptionProps) {
   const dayEndStampRef = useRef<HTMLInputElement | null>(null);
 
-  // useEffect(() => {
-  //   if (dayEndStampRef.current) {
-
-  //   }
-  // }, []);
-
-  // function handleDayEndInput(e: InputEvent) {
   function handleDayEndInput() {
-    // const value = e.target?.value;
-    // console.log(value);
-
-    // onDayEndInput();
-
     if (dayEndStampRef.current) {
       const [hours, minutes] = dayEndStampRef.current.value
         .split(":")
@@ -30,8 +18,6 @@ export default function DayEndOption({ onDayEndInput }: DayEndOptionProps) {
       const ms = hours * 60 * 60 * 1000 + minutes * 60 * 1000;
 
       onDayEndInput(ms);
-
-      // console.log(dayEndStampRef.current.value);
     }
   }
 
@@ -44,9 +30,8 @@ export default function DayEndOption({ onDayEndInput }: DayEndOptionProps) {
         ref={dayEndStampRef}
         type="time"
         id="dayEndStamp"
-        // className="border-2 border-dashed border-gray-400 rounded-md"
         className="bg-transparent border-2 border-gray-300 focus:border-gray-500 dark:border-gray-500 dark:focus:border-gray-100 outline-none rounded-md px-2 py-1 w-28 text-xs font-normal transition-all duration-100"
-        defaultValue="00:00"
+        // defaultValue="00:00"
         onInput={handleDayEndInput}
       />
     </div>

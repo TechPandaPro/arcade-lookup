@@ -208,7 +208,7 @@ export default function DataTable({ data }: DataFetcherProps) {
   }
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto max-w-full">
       <table ref={tableRef} className="mx-auto">
         <thead>{headerRow}</thead>
         <tbody>{dataRows}</tbody>
