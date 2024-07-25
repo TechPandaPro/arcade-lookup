@@ -20,10 +20,10 @@ npm install
 
 This project requires your API key in order to fetch your session data. You can generate an API key using the `/api` command in Slack.
 
-After your API key has been generated, it can be added to the `.env.local` file:
+After your API key has been generated, it can be added to the `.env.local` file with a name of `API_KEY`:
 
 ```bash
-echo "mysupercoolapikey" > .env.local
+echo 'API_KEY="mysupercoolapikey"' > .env.local
 ```
 
 ### Starting the Server
