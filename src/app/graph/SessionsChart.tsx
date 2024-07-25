@@ -46,8 +46,6 @@ ChartJS.register(
   zoomPlugin
 );
 
-// TODO: remove comments and such
-
 export default function SessionsChart({ data, dayEndMs }: DataFetcherProps) {
   const chartRef = useRef<ChartJS | null>(null);
 

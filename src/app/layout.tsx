@@ -7,6 +7,18 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Arcade Lookup",
   description: "A centralized tool to view all your Arcade session data",
+  icons: {
+    icon: [
+      {
+        url: "favicon_light.ico",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        url: "favicon_dark.ico",
+        media: "(prefers-color-scheme: dark)",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({

@@ -2,8 +2,6 @@ import DataTable from "./DataTable";
 import Header from "./Header";
 import { Metadata } from "next";
 
-// TODO: add favicon/title/etc.
-
 interface ResponseData {
   ok: boolean;
   data: {
@@ -17,13 +15,12 @@ interface ResponseData {
 }
 
 async function getData() {
-  // FIXME: fix old data caching
   const res = await fetch(`https://hackhour.hackclub.com/api/history/me`, {
     headers: {
       Authorization: `Bearer ${process.env.API_KEY}`,
     },
-    next: { revalidate: 10 },
-    // cache: "no-store",
+    // next: { revalidate: 10 },
+    cache: "no-store",
   });
   return (await res.json()) as Promise<ResponseData>;
 }
@@ -31,6 +28,18 @@ async function getData() {
 export const metadata: Metadata = {
   title: "Arcade Lookup | Sessions",
   description: "Displays all your session data for Hack Club Arcade",
+  icons: {
+    icon: [
+      {
+        url: "favicon_light.ico",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        url: "favicon_dark.ico",
+        media: "(prefers-color-scheme: dark)",
+      },
+    ],
+  },
 };
 
 export default async function Home() {
