@@ -11,8 +11,8 @@ It consists of two pages:
   - Sessions can be filtered by clicking the magnifying glass icon on the desired table header and typing a search term
   - Sessions can be sorted by clicking any table header
     - The arrow next to the table header indicates whether rows are ascending or descending
-  - Red minutes indicate the session was less than 60 minutes
-  - Orange minutes indicate the session is still in progress
+  - A red "Minutes" cell indicates the session was less than 60 minutes
+  - An orange "Minutes" cell indicates the session is still in progress
   - ![Sessions page](screenshot_sessions.png)
 - **Stats page**
   - This page shows a graph of how many hours you've spent hacking per day
