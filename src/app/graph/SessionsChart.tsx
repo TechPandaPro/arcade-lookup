@@ -9,7 +9,7 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-import { Chart, Line } from "react-chartjs-2";
+import { Chart } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom";
 import { useEffect, useRef } from "react";
 

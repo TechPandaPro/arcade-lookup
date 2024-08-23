@@ -15,11 +15,11 @@ It consists of two pages:
   - An orange "Minutes" cell indicates the session is still in progress
   - ![Sessions page](screenshot_sessions.png)
 - **Stats page**
-  - This page shows a graph of how many hours you've spent hacking per day
+  - This page shows a line chart chart of how many hours you've spent hacking per day
   - If you sometimes hack past midnight and want those sessions to be part of the prior day, you can set a custom day end time
   - You can zoom the chart by pinching or using a scroll wheel
     - Alternatively, you can click and drag while pressing ALT
-  - Once zoomed, you can pan the graph by clicking and dragging
+  - Once zoomed, you can pan the chart by clicking and dragging
   - ![Stats page](screenshot_stats.png)
 
 ## Usage
